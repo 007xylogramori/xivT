@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
+const cron = require("node-cron");
 dotenv.config();
 const app = express();
 app.use(cors());
@@ -12,6 +13,11 @@ app.listen(process.env.PORT, async () => {
 
 app.get("/", (req, res) => {
   res.send("Working");
+});
+
+cron.schedule("*/1 * * * *", async ()=>{
+  const response=await axios.get(process.env.BURL)
+  console.log(response.data);
 });
 
 app.post("/api/v1/getdetails", async (req, res) => {
